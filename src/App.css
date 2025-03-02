@@ -1,0 +1,577 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #121212;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.App {
+  max-width: 900px;
+  width: 100%;
+  margin: 20px 10px 20px 10px;
+  padding: 40px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.width-maxcontainer {
+  width: 500px;
+}
+
+.width-500px {
+  width: max-content;
+}
+
+.green {
+  color: #51d98a;
+}
+
+.p-10 {
+  padding-bottom: 20px;
+}
+
+.p-up-20 {
+  padding-top: 25px;
+}
+
+.hover:hover {
+  color: red;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+h1,
+.logo {
+  font-size: 4.5rem;
+  color: #51d98a;
+  text-align: center;
+  text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.2);
+  margin-bottom: 30px;
+  cursor: pointer;
+  opacity: 0;
+  user-select: none;
+  transform: scale(0.9);
+  animation: fadeInScale 2s ease-out forwards;
+}
+
+.logo {
+  width: 400px;
+  height: auto;
+}
+
+input,
+textarea {
+  width: 100%;
+  max-width: 700px;
+  padding: 12px;
+  margin-bottom: 20px;
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #2a2a2a;
+  color: #fff;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: all 0.6s ease;
+}
+
+input:hover,
+textarea:hover {
+  transform: scale(1.05);
+}
+
+.maintain {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem; /* Adjust the font size as per your preference */
+  color: #51d98a; /* Matching the theme's green color */
+  text-align: center;
+  margin-top: 30px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInFromBottom 1s ease-out forwards;
+  user-select: none;
+}
+
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  max-width: 700px;
+  padding: 12px;
+  background-color: #51d98a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #3f9362;
+  transform: scale(1.05);
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 18px;
+  animation: fadeInFromBottom 0.5s ease-out forwards;
+}
+
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-list {
+  width: 100%;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.note {
+  background-color: #fff;
+  color: #333;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease-in-out;
+  animation: fadeInFromTop 0.5s ease-out;
+}
+
+@keyframes fadeInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover effect for completed note */
+.note.completed-note:hover {
+  box-shadow: 0 8px 25px rgba(81, 217, 138, 0.8);
+}
+
+.note.completed-note:hover h2 {
+  color: rgba(81, 217, 138, 0.8);
+}
+
+.note.completed-note:hover p {
+  color: rgba(81, 217, 138, 0.8);
+}
+
+/* Hover effect for not completed note */
+.note.not-completed-note:hover {
+  box-shadow: 0 8px 25px rgba(218, 63, 63, 0.8);
+}
+
+.note.not-completed-note:hover h2 {
+  color: rgba(218, 63, 63, 0.8);
+}
+
+.note.not-completed-note:hover p {
+  color: rgba(218, 63, 63, 0.8);
+}
+
+.note:hover {
+  transform: translateY(-5px);
+}
+
+.note h2 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.note p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.note-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.note-actions input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 50px;
+  height: 25px;
+  background-color: #ddd;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  outline: none;
+  background-color: #da3f3f;
+}
+
+.note-actions input:checked {
+  background-color: #51d98a;
+  transform: scale(1.1);
+}
+
+.note-actions input:focus {
+  box-shadow: 0 0 0 3px rgba(81, 217, 138, 0.5);
+}
+
+.note-actions input::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s ease;
+}
+
+.note-actions input:checked::before {
+  transform: translateX(25px);
+}
+
+.note-actions .completed-text {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.completed-text.completed {
+  color: #51d98a;
+  margin-left: -200px;
+  margin-top: -2px;
+  animation: fadeInFromLeftCompleted 0.5s ease-in;
+}
+
+.completed-text.not-completed {
+  margin-left: -200px;
+  color: #da3f3f;
+  animation: fadeInFromRightcheckbox 0.5s ease-in;
+}
+
+.success-message {
+  color: #51d98a;
+  font-size: 16px;
+  margin-top: 10px;
+  animation: fadeInFromBottom 0.5s ease-out forwards;
+}
+
+/* .error-message {
+  color:#da3f3f;
+  font-size: 16px;
+  margin-top: 10px;
+  animation: fadeInFromBottom 0.5s ease-out forwards;
+} */
+
+@keyframes fadeInFromRightcheckbox {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInFromLeftCompleted {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.delete-btn {
+  padding: 10px 30px;
+  background-color: #fe2b2b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 0.9rem;
+  min-width: 90px;
+  width: min-content;
+}
+
+.delete-btn:hover {
+  background-color: #9b1c1c;
+  transform: scale(1.05);
+}
+
+.delete-btn:active {
+  transform: scale(0.98);
+}
+
+.logout-btn {
+  padding: 10px 30px;
+  background-color: #fe2b2b;
+  color: #ffffff;
+  width: 75%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 0.9rem;
+  min-width: 90px;
+  /* width: min-content; */
+}
+
+.logout-btn:hover {
+  background-color: #9b1c1c;
+  transform: scale(1.05);
+}
+
+.logout-btn:active {
+  transform: scale(0.98);
+}
+
+.incomplete-btn:disabled {
+  background-color: #ccc; 
+  cursor: not-allowed;  
+  padding: 10px 30px;
+  /* background-color: #fe2b2b; */
+  color: #f00;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 0.9rem;
+  min-width: 90px;
+  width: min-content;
+}
+
+.logoutsection {
+  display: flex;
+  justify-content: center;
+}
+
+.no-notes-message {
+  font-size: 1.2rem;
+  color: #da3f3f;
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeInFromTop 0.5s ease-out forwards;
+}
+
+.tasks-heading {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #51d98a;
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #51d98a;
+  display: inline-block;
+  transition: all 0.3s ease;
+  animation: fadeInFromTop 0.5s ease-out forwards;
+}
+
+.splash-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #121212;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  animation: fadeInOut 8s ease-in-out forwards;
+}
+
+.splash-logo {
+  width: 200px;
+  height: auto;
+  opacity: 0;
+  animation: floatZoom 8s ease-out forwards;
+}
+
+/* User Welcome */
+.user-welcome {
+  font-size: 2rem;
+  color: #51d98a;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  opacity: 0;
+  animation: fadeInText 1s 1s forwards, slideInFromLeft 1s 1s forwards; /* Text fade-in + slide-in */
+}
+
+/* Welcome Message */
+.welcome-message {
+  font-size: 2rem;
+  color: #51d98a;
+  font-family: Arial, sans-serif;
+  font-weight: normal;
+  opacity: 0;
+  animation: fadeInText 1s 2.5s forwards, slideInFromRight 1s 2.5s forwards; /* Text fade-in + slide-in */
+}
+
+/* Designer Message */
+.designer-message {
+  font-size: 1.2rem;
+  color: #3ca066;
+  font-family: "Courier New", Courier, monospace;
+  font-style: italic;
+  opacity: 0;
+  animation: fadeInText 1s 4s forwards, slideInFromBottom 1s 4s forwards; /* Text fade-in + slide-in */
+}
+
+/* Fade-in Animation for Text */
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Slide-in from Left */
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Slide-in from Right */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Slide-in from Bottom */
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Logo Floating and Zooming In */
+@keyframes floatZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes floatZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translate(0, 50%);
+  }
+  25% {
+    opacity: 0.5;
+    transform: scale(0.7) translate(0, 25%);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.05) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) translate(0, 0);
+  }
+}
