@@ -14,8 +14,8 @@ function Register({ navigateTo }) {
 
   const handleRegister = async () => {
     // Clear any previous messages
-    setErrorMessage(""); // Remove any error message
-    setSuccessMessage(""); // Remove any success message
+    setErrorMessage("");
+    setSuccessMessage("");
 
     // Validate password matching
     if (password !== confirmPassword) {
@@ -29,41 +29,31 @@ function Register({ navigateTo }) {
       return;
     }
 
-    // Validate mobile number (optional: you can add a custom validation for mobile)
+    // Validate mobile number (optional)
     if (!mobile) {
       setErrorMessage("Mobile number is required");
       return;
     }
+
     // Send registration request to server
-    // const response = await fetch("http://localhost:5000/register", {
-    const response = await fetch(
-      "https://noteverse-api.onrender.com/register",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          mobile,
-          email,
-          password,
-          confirmPassword,
-        }),
-      }
-    );
+    const response = await fetch("https://noteverse-api.onrender.com/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, mobile, email, password, confirmPassword }),
+    });
 
     const data = await response.json();
 
     if (response.ok) {
-      // Show success message
-      setSuccessMessage(data.message); // Display personalized success message
+      setSuccessMessage(data.message);
 
       // Redirect to login after 2 seconds
       setTimeout(() => {
-        setSuccessMessage(""); // Clear success message
-        window.location.href = "/login"; // Redirect to login page
-      }, 2000); // Wait for 2 seconds before redirecting
+        setSuccessMessage("");
+        window.location.href = "/login";
+      }, 2000);
     } else {
-      setErrorMessage(data.message); // Show the error message if any
+      setErrorMessage(data.message);
     }
   };
 
@@ -72,47 +62,14 @@ function Register({ navigateTo }) {
       <div className="note-list" style={{ marginTop: "-15px" }}>
         <h2 className="p-10 tasks-heading">Register</h2>
       </div>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Mobile"
-        value={mobile}
-        onChange={(e) => setMobile(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        required
-      />
+      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+      <input type="text" placeholder="Mobile" value={mobile} onChange={(e) => setMobile(e.target.value)} required />
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
       <button onClick={handleRegister}>Register</button>
 
-      {/* Clear error message before showing success */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-      {/* Display success message if registration is successful */}
       {successMessage && <p className="success-message">{successMessage}</p>}
 
       <p className="p-up-20 green maintain">

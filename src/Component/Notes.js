@@ -6,21 +6,19 @@ function Notes({ navigateTo }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(true); // Initially set loading to true
-  const [userData, setUserData] = useState(null); // State to store user data
+  const [isLoading, setIsLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // If token is missing, redirect to login
     if (!token) {
       navigateTo("login");
       return;
     }
 
-    // Fetch user data from /user/token
+    // Fetch user data
     fetch("https://noteverse-api.onrender.com/user/token", {
-    // fetch("http://localhost:5000/user/token", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -28,16 +26,15 @@ function Notes({ navigateTo }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.name) {
-          setUserData(data); // Set user data if successful
+          setUserData(data);
         }
       })
       .catch((err) => {
         console.error("Error fetching user data:", err);
-        navigateTo("login"); // Redirect to login if error occurs
+        navigateTo("login");
       });
 
     // Fetch notes
-    // fetch("http://localhost:5000/notes", {
     fetch("https://noteverse-api.onrender.com/notes", {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -53,20 +50,19 @@ function Notes({ navigateTo }) {
       })
       .then((data) => {
         if (Array.isArray(data)) {
-          setNotes(data); // Set notes if response is an array
+          setNotes(data);
         } else {
-          setNotes([]); // Fallback if data is not an array
+          setNotes([]);
         }
 
-        // Add a 2-second delay before hiding the splash screen
         setTimeout(() => {
-          setIsLoading(false); // Hide splash screen after 6 seconds
+          setIsLoading(false);
         }, 6000);
       })
       .catch((err) => {
         console.error("Error fetching notes:", err);
-        setIsLoading(false); // Hide splash screen in case of error
-        navigateTo("login"); // Navigate to login on error
+        setIsLoading(false);
+        navigateTo("login");
       });
   }, [navigateTo]);
 
@@ -81,9 +77,7 @@ function Notes({ navigateTo }) {
       return;
     }
 
-    // Get the _id from the userData state
     const userId = userData ? userData.userid : null;
-    // const userName = userData ? userData.email : null;
 
     if (!userId) {
       setErrorMessage("User ID is not available!");
@@ -91,7 +85,6 @@ function Notes({ navigateTo }) {
     }
 
     fetch("https://noteverse-api.onrender.com/notes", {
-    // fetch("http://localhost:5000/notes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -106,12 +99,11 @@ function Notes({ navigateTo }) {
         setContent("");
         setErrorMessage("");
       })
-      .catch((err) => console.error("Error adding note:", err)); // Error handling for note creation
+      .catch((err) => console.error("Error adding note:", err));
   };
 
   const toggleCompletion = (id, completed) => {
     fetch(`https://noteverse-api.onrender.com/notes/${id}`, {
-    // fetch(`http://localhost:5000/notes/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -123,30 +115,34 @@ function Notes({ navigateTo }) {
       .then((updatedNote) => {
         setNotes(notes.map((note) => (note._id === id ? updatedNote : note)));
       })
-      .catch((err) => console.error("Error toggling note completion:", err)); // Error handling for toggling
+      .catch((err) => console.error("Error toggling note completion:", err));
   };
 
-  const deletenote = (id) => {
+  const deleteNote = (id) => {
     fetch(`https://noteverse-api.onrender.com/notes/${id}`, {
-    // fetch(`http://localhost:5000/notes/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
       .then(() => {
         setNotes(notes.filter((note) => note._id !== id));
       })
-      .catch((err) => console.error("Error deleting note:", err)); // Error handling for deleting notes
+      .catch((err) => console.error("Error deleting note:", err));
   };
 
   return (
     <div>
-      {/* Display splash screen if loading */}
       {isLoading ? (
         <div className="splash-screen">
           <img src={logo} alt="Logo" className="splash-logo" />
-          {userData && <p className="user-welcome">Hey, {userData.name}</p>}
-          <p className="welcome-message green">Welcome back to NoteVerse!</p>
-          <p className="designer-message green">Crafted with care by Jainil.</p>
+          {userData && (
+            <p className="user-welcome p-10">Hey, {userData.name}</p>
+          )}
+          <p className="welcome-message green p-10">
+            Welcome back to NoteVerse!
+          </p>
+          <p className="designer-message green p-10">
+            Crafted with care by Jainil.
+          </p>
         </div>
       ) : (
         <div className="App">
@@ -194,19 +190,17 @@ function Notes({ navigateTo }) {
                         toggleCompletion(note._id, note.completed)
                       }
                     />
-                    <p
-                      className={`completed-text ${
-                        note.completed ? "completed" : "not-completed"
-                      }`}
-                    >
-                      {note.completed ? "✔ Completed" : "❌ Not Complete"}
-                    </p>
-
-                    {/* Conditionally render delete button or incomplete text */}
+                      <p
+                        className={`completed-text ${
+                          note.completed ? "completed" : "not-completed"
+                        }`}
+                      >
+                        {note.completed ? "✔ Completed" : "❌ Not Complete"}
+                      </p>
                     {note.completed ? (
                       <button
                         className="delete-btn"
-                        onClick={() => deletenote(note._id)}
+                        onClick={() => deleteNote(note._id)}
                       >
                         Delete
                       </button>

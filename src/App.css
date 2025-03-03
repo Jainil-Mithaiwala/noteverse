@@ -119,17 +119,6 @@ textarea:hover {
   user-select: none;
 }
 
-@keyframes fadeInFromBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 textarea {
   min-height: 100px;
   resize: vertical;
@@ -392,8 +381,8 @@ button:hover {
 }
 
 .incomplete-btn:disabled {
-  background-color: #ccc; 
-  cursor: not-allowed;  
+  background-color: #ccc;
+  cursor: not-allowed;
   padding: 10px 30px;
   /* background-color: #fe2b2b; */
   color: #f00;
@@ -573,5 +562,294 @@ button:hover {
   100% {
     opacity: 0;
     transform: scale(1) translate(0, 0);
+  }
+}
+
+@media (max-width: 600px) {
+  /* Global Body Styles */
+  body {
+    margin: 0;
+    padding: 10px; /* Consistent padding around body */
+    font-family: "Poppins", sans-serif; /* Clean and modern font */
+    background-color: #121212; /* Dark background for contrast */
+    color: #ffffff; /* White text for better readability */
+  }
+
+  /* Main App Container */
+  .App {
+    margin: 0 auto; /* Center the container */
+    padding: 15px; /* Reduced padding for a balanced look */
+    background-color: #1e1e1e; /* Dark background for app */
+    border-radius: 10px; /* Soft rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 100%; /* Full width */
+    overflow: hidden; /* Prevent overflow */
+  }
+
+  .note {
+    padding: 10px; /* Reduce padding */
+    margin: 5px;   /* Reduce margin */
+  }
+
+  .note-actions {
+    flex-direction: column;  /* Stack actions vertically */
+    align-items: center;     /* Center actions */
+  }
+
+  .completed-text {
+    font-size: 0.9rem;  /* Make font size slightly smaller */
+    margin-left: 0;     /* Remove margin between checkbox and status */
+    margin-top: 10px;   /* Add some space between the checkbox and the text */
+  }
+
+  .note-actions button {
+    width: 100%; /* Make the buttons full width on small screens */
+    margin-left: 0; /* Remove side margin */
+    padding: 10px;   /* Increase button padding for easier tap */
+    margin-top: 5px; /* Add some space between buttons */
+  }
+
+  .note-actions input {
+    margin-bottom: 10px; /* Add some space below the checkbox */
+  }
+
+  .note h2 {
+    font-size: 1.2rem; /* Make title font size smaller on small screens */
+  }
+
+  .note p {
+    font-size: 0.9rem; /* Adjust content font size for smaller screens */
+  }
+
+  /* Header Styles */
+  h1,
+  .logo {
+    font-size: 2rem; /* Slightly reduced size for better fit */
+    text-align: center;
+    color: #51d98a; /* Bright accent color */
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.2); /* Subtle shadow effect */
+    opacity: 0;
+    animation: fadeIn 2s ease-out forwards;
+  }
+
+  /* Logo Styling */
+  .logo {
+    width: 150px; /* Adjust logo size for mobile */
+    height: auto;
+    margin-bottom: 15px;
+  }
+
+  /* Task List (Single Column Layout) */
+  .note-list {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 15px; /* Reduced gap for neatness */
+    margin-top: 15px;
+  }
+
+  /* Note Styles */
+  .note {
+    background-color: #fff;
+    color: #333;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: transform 0.3s ease;
+  }
+
+  .note:hover {
+    transform: translateY(-5px); /* Hover effect to lift the note */
+  }
+
+  /* Input and Textarea Fields */
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #2a2a2a;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+
+  input:focus,
+  textarea:focus {
+    background-color: #3c3c3c; /* Slightly lighter on focus */
+  }
+
+  /* Button Styles */
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #51d98a; /* Button background */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #3f9362; /* Darker on hover */
+    transform: scale(1.05); /* Slight hover zoom effect */
+  }
+
+  button:active {
+    transform: scale(0.98); /* Slight shrink effect when clicked */
+  }
+
+  /* Note Action Buttons and Toggle */
+  .note-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .note-actions input {
+    width: 50px; /* Adjust toggle size */
+    height: 25px;
+    border-radius: 12px;
+    background-color: #da3f3f;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .note-actions input:checked {
+    background-color: #51d98a; /* Green when checked */
+    transform: scale(1.1); /* Slight zoom effect on toggle */
+  }
+
+  /* Task Heading */
+  .tasks-heading {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #51d98a;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #51d98a; /* Underlined heading */
+    padding-bottom: 10px;
+  }
+
+  /* Splash Logo (Intro Screen) */
+  .splash-logo {
+    width: 120px; /* Slightly smaller logo */
+    height: auto;
+    margin-bottom: 15px;
+    opacity: 0;
+    animation: fadeIn 2s ease-out forwards;
+  }
+
+  /* User and Welcome Messages */
+  .user-welcome,
+  .welcome-message,
+  .designer-message {
+    text-align: center;
+    color: #51d98a;
+    opacity: 0;
+    animation: fadeInText 1s ease-out forwards;
+  }
+
+  /* Specific welcome message sizes */
+  .user-welcome {
+    font-size: 1.5rem;
+  }
+
+  .welcome-message {
+    font-size: 1.4rem;
+  }
+
+  .designer-message {
+    font-size: 1rem;
+    color: #3ca066;
+  }
+
+  /* Animation for Fading In Text */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInText {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Adjusted Keyframes for Floating Logo */
+  @keyframes floatZoom {
+    0% {
+      opacity: 0;
+      transform: scale(0.4) translateY(50%);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1) translateY(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 1025px) {
+  body {
+    padding: 0 30px;
+  }
+
+  .App {
+    margin: 30px;
+    padding: 40px;
+  }
+
+  h1,
+  .logo {
+    font-size: 4.5rem;
+    margin-bottom: 30px;
+  }
+
+  .note-list {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(300px, 1fr)
+    ); /* Multiple columns for desktop */
+  }
+
+  input,
+  textarea {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .note {
+    padding: 20px;
+  }
+
+  .tasks-heading {
+    font-size: 2rem;
+  }
+
+  .splash-logo {
+    width: 200px;
   }
 }
