@@ -8,6 +8,8 @@ function Notes({ navigateTo }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+  const backendurl = "https://noteverse-api.onrender.com/";
+  // const backendurl = "http://localhost:5000/";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -17,8 +19,7 @@ function Notes({ navigateTo }) {
       return;
     }
 
-    // Fetch user data
-    fetch("https://noteverse-api.onrender.com/user/token", {
+    fetch(backendurl + "user/token", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,8 +35,7 @@ function Notes({ navigateTo }) {
         navigateTo("login");
       });
 
-    // Fetch notes
-    fetch("https://noteverse-api.onrender.com/notes", {
+    fetch(backendurl + "notes", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
@@ -84,7 +84,7 @@ function Notes({ navigateTo }) {
       return;
     }
 
-    fetch("https://noteverse-api.onrender.com/notes", {
+    fetch(backendurl + "notes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ function Notes({ navigateTo }) {
   };
 
   const toggleCompletion = (id, completed) => {
-    fetch(`https://noteverse-api.onrender.com/notes/${id}`, {
+    fetch(backendurl + `notes/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +119,7 @@ function Notes({ navigateTo }) {
   };
 
   const deleteNote = (id) => {
-    fetch(`https://noteverse-api.onrender.com/notes/${id}`, {
+    fetch(backendurl + `notes/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
@@ -190,13 +190,13 @@ function Notes({ navigateTo }) {
                         toggleCompletion(note._id, note.completed)
                       }
                     />
-                      <p
-                        className={`completed-text ${
-                          note.completed ? "completed" : "not-completed"
-                        }`}
-                      >
-                        {note.completed ? "✔ Completed" : "❌ Not Complete"}
-                      </p>
+                    <p
+                      className={`completed-text ${
+                        note.completed ? "completed" : "not-completed"
+                      }`}
+                    >
+                      {note.completed ? "✔ Completed" : "❌ Not Complete"}
+                    </p>
                     {note.completed ? (
                       <button
                         className="delete-btn"
