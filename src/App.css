@@ -164,7 +164,7 @@ button:hover {
   width: 100%;
   margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
   gap: 20px;
 }
 
@@ -643,7 +643,7 @@ button:hover {
   /* Task List (Single Column Layout) */
   .note-list {
     display: grid;
-    grid-template-columns: 1fr; /* Single column layout */
+    /* grid-template-columns: 1fr; Single column layout */
     gap: 15px; /* Reduced gap for neatness */
     margin-top: 15px;
   }
@@ -789,7 +789,6 @@ button:hover {
     }
   }
 
-  /* Adjusted Keyframes for Floating Logo */
   @keyframes floatZoom {
     0% {
       opacity: 0;
@@ -823,12 +822,6 @@ button:hover {
     margin-bottom: 30px;
   }
 
-  .note-list {
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(300px, 1fr)
-    ); /* Multiple columns for desktop */
-  }
 
   input,
   textarea {

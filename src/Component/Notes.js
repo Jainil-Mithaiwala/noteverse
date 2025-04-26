@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "./../NoteVerse NV logo.png"; // Import the logo
+import Config from "../Config";
 
 function Notes({ navigateTo }) {
   const [notes, setNotes] = useState([]);
@@ -8,7 +9,7 @@ function Notes({ navigateTo }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(null);
-  const backendurl = "https://noteverse-api.onrender.com/";
+  const backendurl = Config.backendurl;
   // const backendurl = "http://localhost:5000/";
 
   useEffect(() => {

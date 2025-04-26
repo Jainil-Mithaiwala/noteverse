@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Config from "../Config";
+
+const backendurl = Config.backendurl;
 
 function Login({ navigateTo }) {
   const [email, setEmail] = useState("");
@@ -6,7 +9,7 @@ function Login({ navigateTo }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
-    const response = await fetch("https://noteverse-api.onrender.com/login", {
+    const response = await fetch(backendurl + "login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -27,8 +30,20 @@ function Login({ navigateTo }) {
       <div className="note-list" style={{ marginTop: "-15px" }}>
         <h2 className="p-10 tasks-heading">Login</h2>
       </div>
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
       <button onClick={handleLogin}>Login</button>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <p className="p-up-20 green maintain">

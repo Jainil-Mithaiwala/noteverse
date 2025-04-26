@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Config from "../Config";
+
+const backendurl = Config.backendurl;
 
 function Register({ navigateTo }) {
   const [name, setName] = useState("");
@@ -36,7 +39,7 @@ function Register({ navigateTo }) {
     }
 
     // Send registration request to server
-    const response = await fetch("https://noteverse-api.onrender.com/register", {
+    const response = await fetch(backendurl + "register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, mobile, email, password, confirmPassword }),
@@ -62,11 +65,41 @@ function Register({ navigateTo }) {
       <div className="note-list" style={{ marginTop: "-15px" }}>
         <h2 className="p-10 tasks-heading">Register</h2>
       </div>
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-      <input type="text" placeholder="Mobile" value={mobile} onChange={(e) => setMobile(e.target.value)} required />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+      <input
+        type="text"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Mobile"
+        value={mobile}
+        onChange={(e) => setMobile(e.target.value)}
+        required
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+      />
       <button onClick={handleRegister}>Register</button>
 
       {errorMessage && <p className="error-message">{errorMessage}</p>}
