@@ -1,14 +1,8 @@
 class Config {
   constructor() {
-    this.backendurl = "https://noteverse-api.onrender.com/";
-    //     this.backendurl = "http://localhost:5000/";
-  }
-
-  getHeaders(token) {
-    return {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
+    // this.backendurl = "https://noteverse-api.onrender.com/";
+    // this.backendurl = "https://noteverse-backend-nine.vercel.app/";
+        this.backendurl = "http://192.168.1.2:7071/noteverse/v1/";
   }
 }
 

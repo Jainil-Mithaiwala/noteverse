@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logo from "./../NoteVerse NV logo.png"; // Import the logo
+import logo from "./../NoteVerse NV logo.png";
 import Config from "../Config";
 
 function Notes({ navigateTo }) {
@@ -9,66 +9,79 @@ function Notes({ navigateTo }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [isStatusUpdated, setIsStatusUpdated] = useState(false);
+
+  // Modal state
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalAction, setModalAction] = useState(null); // { type: 'delete' | 'logout', noteId?: string }
+  const [modalAnimatingOut, setModalAnimatingOut] = useState(false);
+
   const backendurl = Config.backendurl;
-  // const backendurl = "http://localhost:5000/";
+
+  const fetchNotes = () => {
+    const uid = localStorage.getItem("uid");
+
+    fetch(backendurl + "notes/list", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userid: uid }),
+    })
+      .then((res) => res.json())
+      .then((noteData) => {
+        if (Array.isArray(noteData.data)) {
+          setNotes(noteData.data);
+        } else {
+          setNotes([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching notes:", err);
+        navigateTo("login");
+      });
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const uid = localStorage.getItem("uid");
+    const unqkey = localStorage.getItem("unqkey");
 
-    if (!token) {
+    if (!token || !uid || !unqkey) {
       navigateTo("login");
       return;
     }
 
-    fetch(backendurl + "user/token", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    fetch(backendurl + "verify/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, uid, unqkey }),
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
-        if (data.name) {
-          setUserData(data);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching user data:", err);
-        navigateTo("login");
-      });
-
-    fetch(backendurl + "notes", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 401) {
-            localStorage.removeItem("token");
-            navigateTo("login");
-          }
-          throw new Error("Unauthorized");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setNotes(data);
+        if (data && data.name) {
+          setUserData({ name: data.name, userid: uid });
+          fetchNotes();
+          setTimeout(() => setIsLoading(false), 6000);
         } else {
-          setNotes([]);
+          navigateTo("login");
         }
-
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 6000);
       })
       .catch((err) => {
-        console.error("Error fetching notes:", err);
-        setIsLoading(false);
+        console.error("Token verification failed:", err);
         navigateTo("login");
       });
   }, [navigateTo]);
 
-  const handleLogout = () => {
+  useEffect(() => {
+    if (isStatusUpdated) {
+      fetchNotes();
+      setIsStatusUpdated(false);
+    }
+  }, [isStatusUpdated]);
+
+  const handleLogoutConfirmed = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("uid");
+    localStorage.removeItem("unqkey");
     navigateTo("login");
   };
 
@@ -78,56 +91,82 @@ function Notes({ navigateTo }) {
       return;
     }
 
-    const userId = userData ? userData.userid : null;
-
+    const userId = userData?.userid;
     if (!userId) {
       setErrorMessage("User ID is not available!");
       return;
     }
 
-    fetch(backendurl + "notes", {
+    fetch(backendurl + "notes/add", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ title, content, completed: false, userId }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userid: userId, title, content }),
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((newNote) => {
         setNotes([...notes, newNote]);
         setTitle("");
         setContent("");
         setErrorMessage("");
+        fetchNotes();
       })
       .catch((err) => console.error("Error adding note:", err));
   };
 
-  const toggleCompletion = (id, completed) => {
-    fetch(backendurl + `notes/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ completed: !completed }),
+  const toggleCompletion = (id, isCompleted) => {
+    const userId = userData?.userid;
+    if (!userId) return;
+
+    fetch(backendurl + "notes/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userid: userId,
+        _id: id,
+        status: isCompleted ? 0 : 1,
+      }),
     })
-      .then((response) => response.json())
-      .then((updatedNote) => {
-        setNotes(notes.map((note) => (note._id === id ? updatedNote : note)));
-      })
-      .catch((err) => console.error("Error toggling note completion:", err));
+      .then((res) => res.json())
+      .then(() => setIsStatusUpdated(true))
+      .catch((err) => console.error("Error toggling note status:", err));
   };
 
-  const deleteNote = (id) => {
-    fetch(backendurl + `notes/${id}`, {
+  const deleteNoteConfirmed = (id) => {
+    const userId = userData?.userid;
+
+    fetch(backendurl + "notes/delete", {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _id: id, userid: userId }),
     })
       .then(() => {
         setNotes(notes.filter((note) => note._id !== id));
+        fetchNotes();
       })
       .catch((err) => console.error("Error deleting note:", err));
+  };
+
+  const handleModalYes = () => {
+    if (modalAction?.type === "logout") {
+      handleLogoutConfirmed();
+    } else if (modalAction?.type === "delete" && modalAction.noteId) {
+      deleteNoteConfirmed(modalAction.noteId);
+    }
+
+    // Start exit animation
+    setModalAnimatingOut(true);
+    setTimeout(() => {
+      setModalVisible(false);  // Hide modal only after animation completes
+      setModalAnimatingOut(false);
+    }, 300); // match CSS animation duration
+  };
+
+  const handleModalNo = () => {
+    setModalAnimatingOut(true);
+    setTimeout(() => {
+      setModalVisible(false);
+      setModalAnimatingOut(false);
+    }, 300);
   };
 
   return (
@@ -135,15 +174,9 @@ function Notes({ navigateTo }) {
       {isLoading ? (
         <div className="splash-screen">
           <img src={logo} alt="Logo" className="splash-logo" />
-          {userData && (
-            <p className="user-welcome p-10">Hey, {userData.name}</p>
-          )}
-          <p className="welcome-message green p-10">
-            Welcome back to NoteVerse!
-          </p>
-          <p className="designer-message green p-10">
-            Crafted with care by Jainil.
-          </p>
+          {userData && <p className="user-welcome p-10">Hey, {userData.name}</p>}
+          <p className="welcome-message green p-10">Welcome back to NoteVerse!</p>
+          <p className="designer-message green p-10">Crafted with care by Jainil.</p>
         </div>
       ) : (
         <div className="App">
@@ -165,43 +198,37 @@ function Notes({ navigateTo }) {
             <button onClick={addNote}>Add Note</button>
             <p className="maintain">Design and maintain by Jainil</p>
           </div>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+          {errorMessage && <p className="error-message fade-out">{errorMessage}</p>}
 
           <div className="note-list" style={{ marginTop: "50px" }}>
             <h2 className="tasks-heading">Your Notes</h2>
             {notes.length === 0 ? (
-              <p className="no-notes-message">
-                No notes available at this moment
-              </p>
+              <p className="no-notes-message">No notes available at this moment</p>
             ) : (
               notes.map((note) => (
                 <div
                   key={note._id}
-                  className={`note ${
-                    note.completed ? "completed-note" : "not-completed-note"
-                  }`}
+                  className={`note ${note.status === 1 ? "completed-note" : "not-completed-note"}`}
                 >
                   <h2>{note.title}</h2>
                   <p>{note.content}</p>
                   <div className="note-actions">
                     <input
                       type="checkbox"
-                      checked={note.completed}
-                      onChange={() =>
-                        toggleCompletion(note._id, note.completed)
-                      }
+                      checked={note.status === 1}
+                      onChange={() => toggleCompletion(note._id, note.status === 1)}
                     />
-                    <p
-                      className={`completed-text ${
-                        note.completed ? "completed" : "not-completed"
-                      }`}
-                    >
-                      {note.completed ? "✔ Completed" : "❌ Not Complete"}
+                    <p className={`completed-text ${note.status === 1 ? "completed" : "not-completed"}`}>
+                      {note.status === 1 ? "✔ Completed" : "❌ Not Complete"}
                     </p>
-                    {note.completed ? (
+                    {note.status === 1 ? (
                       <button
                         className="delete-btn"
-                        onClick={() => deleteNote(note._id)}
+                        onClick={() => {
+                          setModalAction({ type: "delete", noteId: note._id });
+                          setModalVisible(true);
+                        }}
                       >
                         Delete
                       </button>
@@ -216,13 +243,40 @@ function Notes({ navigateTo }) {
               ))
             )}
             <div className="logoutsection">
-              <button onClick={handleLogout} className="logout-btn">
+              <button
+                onClick={() => {
+                  setModalAction({ type: "logout" });
+                  setModalVisible(true);
+                }}
+                className="logout-btn"
+              >
                 Logout
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {modalVisible && (
+        <div className={`modal-overlay ${modalAnimatingOut ? "hide" : ""}`}>
+          <div className={`modal-content ${modalAnimatingOut ? "hide" : ""}`}>
+            <span className="material-symbols-outlined modal-icon">
+              {modalAction?.type === "logout" ? "logout" : "delete"}
+            </span>
+            <p>
+              {modalAction?.type === "logout"
+                ? "Are you sure you want to log out?"
+                : "Are you sure you want to delete this note?"}
+            </p>
+            <div className="modal-buttons">
+              <button onClick={handleModalYes}>Yes</button>
+              <button onClick={handleModalNo}>No</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 }

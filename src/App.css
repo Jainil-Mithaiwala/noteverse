@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+/* @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap'); */
+
 * {
   margin: 0;
   padding: 0;
@@ -29,6 +31,27 @@ body {
   transition: all 0.3s ease;
 }
 
+/* When error message is active, increase the padding to create space */
+.App.error-active {
+  padding-bottom: 60px;
+  /* Change padding to 60px */
+}
+
+
+/* .App {
+  max-width: 900px;
+  width: 100%;
+  margin: 20px 10px 20px 10px;
+  padding: 40px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+} */
+
 .width-maxcontainer {
   width: 500px;
 }
@@ -58,6 +81,7 @@ body {
     opacity: 0;
     transform: scale(0.5);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -109,11 +133,12 @@ textarea:hover {
 
 .maintain {
   font-family: "Poppins", sans-serif;
-  font-size: 1rem; /* Adjust the font size as per your preference */
-  color: #51d98a; /* Matching the theme's green color */
+  font-size: 1rem;
+  color: #51d98a;
   text-align: center;
   margin-top: 30px;
-  opacity: 0;
+  margin-bottom: 16px;
+  /* opacity: 0; */
   transform: translateY(20px);
   animation: fadeInFromBottom 1s ease-out forwards;
   user-select: none;
@@ -146,17 +171,39 @@ button:hover {
   color: red;
   font-size: 14px;
   margin-top: 18px;
-  animation: fadeInFromBottom 0.5s ease-out forwards;
 }
 
-@keyframes fadeInFromBottom {
+/* Fade in: from TOP to bottom */
+.fade-in {
+  animation: fadeInFromTop 0.5s ease-out forwards;
+}
+
+@keyframes fadeInFromTop {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Fade out: to TOP (from bottom) */
+.fade-out {
+  animation: fadeOutToTop 1s ease-out forwards;
+}
+
+@keyframes fadeOutToTop {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
 }
 
@@ -166,6 +213,9 @@ button:hover {
   display: grid;
   /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
   gap: 20px;
+   max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .note {
@@ -176,13 +226,22 @@ button:hover {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease-in-out;
   animation: fadeInFromTop 0.5s ease-out;
+
+  max-width: 600px;               /* fixed readable width */
+  width: 100%;
+  margin: 20px auto;              /* center the note */
+  overflow-x: hidden;             /* prevent horizontal scroll */
+  word-wrap: break-word;          /* break long words */
+  overflow-wrap: break-word;      /* ensure compatibility */
 }
+
 
 @keyframes fadeInFromTop {
   0% {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -223,11 +282,17 @@ button:hover {
   font-size: 1.6rem;
   color: #333;
   margin-bottom: 10px;
+    word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .note p {
   font-size: 1rem;
   color: #666;
+    word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .note-actions {
@@ -318,6 +383,7 @@ button:hover {
     opacity: 0;
     transform: translateX(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -329,6 +395,7 @@ button:hover {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -444,71 +511,200 @@ button:hover {
   animation: floatZoom 8s ease-out forwards;
 }
 
-/* User Welcome */
 .user-welcome {
   font-size: 2rem;
   color: #51d98a;
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   opacity: 0;
-  animation: fadeInText 1s 1s forwards, slideInFromLeft 1s 1s forwards; /* Text fade-in + slide-in */
+  animation: fadeInText 1s 1s forwards, slideInFromLeft 1s 1s forwards;
 }
 
-/* Welcome Message */
 .welcome-message {
   font-size: 2rem;
   color: #51d98a;
-  font-family: Arial, sans-serif;
+  font-family: "Courier New", sans-serif;
   font-weight: normal;
   opacity: 0;
-  animation: fadeInText 1s 2.5s forwards, slideInFromRight 1s 2.5s forwards; /* Text fade-in + slide-in */
+  animation: fadeInText 1s 2.5s forwards, slideInFromRight 1s 2.5s forwards;
 }
 
-/* Designer Message */
 .designer-message {
   font-size: 1.2rem;
   color: #3ca066;
   font-family: "Courier New", Courier, monospace;
   font-style: italic;
   opacity: 0;
-  animation: fadeInText 1s 4s forwards, slideInFromBottom 1s 4s forwards; /* Text fade-in + slide-in */
+  animation: fadeInText 1s 4s forwards, slideInFromBottom 1s 4s forwards;
 }
 
-/* Fade-in Animation for Text */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+.modal-overlay.hide {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+
+.modal-content {
+  background: #ffffff;
+  color: #222;
+  padding: 32px 28px;
+  border-radius: 14px;
+  /* box-shadow: 0 8px 25px rgba(81, 217, 138, 0.8); */
+  box-shadow: 0 8px 25px rgba(217, 81, 81, 0.8);
+  text-align: center;
+  max-width: 90%;
+  width: 500px;
+  height: 300px;
+  transform: scale(0.9);
+  animation: popUp 0.3s ease-out forwards;
+  font-family: "Segoe UI", "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content.hide {
+  animation: popDown 0.3s ease-in forwards;
+}
+
+.modal-content p {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+  /* color: #51d98a; */
+  color: #d95151;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 15px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.25s ease;
+}
+
+.modal-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.modal-buttons button:first-child {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.modal-buttons button:first-child:hover {
+  background-color: #c0392b;
+}
+
+.modal-buttons button:last-child {
+  background-color: #51d98a;
+  color: #fff;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #3fc77b;
+}
+
+.modal-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  color: #d95151;
+  user-select: none;
+}
+
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+
+@keyframes popUp {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes popDown {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
 @keyframes fadeInText {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
 
-/* Slide-in from Left */
 @keyframes slideInFromLeft {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(0);
   }
 }
 
-/* Slide-in from Right */
 @keyframes slideInFromRight {
   0% {
     transform: translateX(100%);
   }
+
   100% {
     transform: translateX(0);
   }
 }
 
-/* Slide-in from Bottom */
 @keyframes slideInFromBottom {
   0% {
     transform: translateY(100%);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -520,10 +716,12 @@ button:hover {
     opacity: 0;
     transform: scale(0.5);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.2);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -534,9 +732,11 @@ button:hover {
   0% {
     opacity: 1;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -547,18 +747,22 @@ button:hover {
     opacity: 0;
     transform: scale(0.3) translate(0, 50%);
   }
+
   25% {
     opacity: 0.5;
     transform: scale(0.7) translate(0, 25%);
   }
+
   50% {
     opacity: 1;
     transform: scale(1) translate(0, 0);
   }
+
   75% {
     opacity: 1;
     transform: scale(1.05) translate(0, 0);
   }
+
   100% {
     opacity: 0;
     transform: scale(1) translate(0, 0);
@@ -566,76 +770,106 @@ button:hover {
 }
 
 @media (max-width: 600px) {
+
   /* Global Body Styles */
   body {
     margin: 0;
-    padding: 10px; /* Consistent padding around body */
-    font-family: "Poppins", sans-serif; /* Clean and modern font */
-    background-color: #121212; /* Dark background for contrast */
-    color: #ffffff; /* White text for better readability */
+    padding: 10px;
+    /* Consistent padding around body */
+    font-family: "Poppins", sans-serif;
+    /* Clean and modern font */
+    background-color: #121212;
+    /* Dark background for contrast */
+    color: #ffffff;
+    /* White text for better readability */
   }
 
   /* Main App Container */
   .App {
-    margin: 0 auto; /* Center the container */
-    padding: 15px; /* Reduced padding for a balanced look */
-    background-color: #1e1e1e; /* Dark background for app */
-    border-radius: 10px; /* Soft rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    max-width: 100%; /* Full width */
-    overflow: hidden; /* Prevent overflow */
+    margin: 0 auto;
+    /* Center the container */
+    padding: 15px;
+    /* Reduced padding for a balanced look */
+    background-color: #1e1e1e;
+    /* Dark background for app */
+    border-radius: 10px;
+    /* Soft rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow */
+    max-width: 100%;
+    /* Full width */
+    overflow: hidden;
+    /* Prevent overflow */
   }
 
   .note {
-    padding: 10px; /* Reduce padding */
-    margin: 5px;   /* Reduce margin */
+    padding: 10px;
+    /* Reduce padding */
+    margin: 5px;
+    /* Reduce margin */
   }
 
   .note-actions {
-    flex-direction: column;  /* Stack actions vertically */
-    align-items: center;     /* Center actions */
+    flex-direction: column;
+    /* Stack actions vertically */
+    align-items: center;
+    /* Center actions */
   }
 
   .completed-text {
-    font-size: 0.9rem;  /* Make font size slightly smaller */
-    margin-left: 0;     /* Remove margin between checkbox and status */
-    margin-top: 10px;   /* Add some space between the checkbox and the text */
+    font-size: 0.9rem;
+    /* Make font size slightly smaller */
+    margin-left: 0;
+    /* Remove margin between checkbox and status */
+    margin-top: 10px;
+    /* Add some space between the checkbox and the text */
   }
 
   .note-actions button {
-    width: 100%; /* Make the buttons full width on small screens */
-    margin-left: 0; /* Remove side margin */
-    padding: 10px;   /* Increase button padding for easier tap */
-    margin-top: 5px; /* Add some space between buttons */
+    width: 100%;
+    /* Make the buttons full width on small screens */
+    margin-left: 0;
+    /* Remove side margin */
+    padding: 10px;
+    /* Increase button padding for easier tap */
+    margin-top: 5px;
+    /* Add some space between buttons */
   }
 
   .note-actions input {
-    margin-bottom: 10px; /* Add some space below the checkbox */
+    margin-bottom: 10px;
+    /* Add some space below the checkbox */
   }
 
   .note h2 {
-    font-size: 1.2rem; /* Make title font size smaller on small screens */
+    font-size: 1.2rem;
+    /* Make title font size smaller on small screens */
   }
 
   .note p {
-    font-size: 0.9rem; /* Adjust content font size for smaller screens */
+    font-size: 0.9rem;
+    /* Adjust content font size for smaller screens */
   }
 
   /* Header Styles */
   h1,
   .logo {
-    font-size: 2rem; /* Slightly reduced size for better fit */
+    font-size: 2rem;
+    /* Slightly reduced size for better fit */
     text-align: center;
-    color: #51d98a; /* Bright accent color */
+    color: #51d98a;
+    /* Bright accent color */
     margin-bottom: 20px;
-    text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.2); /* Subtle shadow effect */
+    text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.2);
+    /* Subtle shadow effect */
     opacity: 0;
     animation: fadeIn 2s ease-out forwards;
   }
 
   /* Logo Styling */
   .logo {
-    width: 150px; /* Adjust logo size for mobile */
+    width: 150px;
+    /* Adjust logo size for mobile */
     height: auto;
     margin-bottom: 15px;
   }
@@ -644,7 +878,8 @@ button:hover {
   .note-list {
     display: grid;
     /* grid-template-columns: 1fr; Single column layout */
-    gap: 15px; /* Reduced gap for neatness */
+    gap: 15px;
+    /* Reduced gap for neatness */
     margin-top: 15px;
   }
 
@@ -654,12 +889,14 @@ button:hover {
     color: #333;
     padding: 12px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Soft shadow */
     transition: transform 0.3s ease;
   }
 
   .note:hover {
-    transform: translateY(-5px); /* Hover effect to lift the note */
+    transform: translateY(-5px);
+    /* Hover effect to lift the note */
   }
 
   /* Input and Textarea Fields */
@@ -678,7 +915,8 @@ button:hover {
 
   input:focus,
   textarea:focus {
-    background-color: #3c3c3c; /* Slightly lighter on focus */
+    background-color: #3c3c3c;
+    /* Slightly lighter on focus */
   }
 
   /* Button Styles */
@@ -686,7 +924,8 @@ button:hover {
     width: 100%;
     padding: 12px;
     font-size: 1rem;
-    background-color: #51d98a; /* Button background */
+    background-color: #51d98a;
+    /* Button background */
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -695,12 +934,15 @@ button:hover {
   }
 
   button:hover {
-    background-color: #3f9362; /* Darker on hover */
-    transform: scale(1.05); /* Slight hover zoom effect */
+    background-color: #3f9362;
+    /* Darker on hover */
+    transform: scale(1.05);
+    /* Slight hover zoom effect */
   }
 
   button:active {
-    transform: scale(0.98); /* Slight shrink effect when clicked */
+    transform: scale(0.98);
+    /* Slight shrink effect when clicked */
   }
 
   /* Note Action Buttons and Toggle */
@@ -712,7 +954,8 @@ button:hover {
   }
 
   .note-actions input {
-    width: 50px; /* Adjust toggle size */
+    width: 50px;
+    /* Adjust toggle size */
     height: 25px;
     border-radius: 12px;
     background-color: #da3f3f;
@@ -720,8 +963,10 @@ button:hover {
   }
 
   .note-actions input:checked {
-    background-color: #51d98a; /* Green when checked */
-    transform: scale(1.1); /* Slight zoom effect on toggle */
+    background-color: #51d98a;
+    /* Green when checked */
+    transform: scale(1.1);
+    /* Slight zoom effect on toggle */
   }
 
   /* Task Heading */
@@ -731,13 +976,15 @@ button:hover {
     color: #51d98a;
     font-weight: 600;
     margin-bottom: 20px;
-    border-bottom: 2px solid #51d98a; /* Underlined heading */
+    border-bottom: 2px solid #51d98a;
+    /* Underlined heading */
     padding-bottom: 10px;
   }
 
   /* Splash Logo (Intro Screen) */
   .splash-logo {
-    width: 120px; /* Slightly smaller logo */
+    width: 120px;
+    /* Slightly smaller logo */
     height: auto;
     margin-bottom: 15px;
     opacity: 0;
@@ -774,6 +1021,7 @@ button:hover {
       opacity: 0;
       transform: translateY(-10px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
@@ -784,6 +1032,7 @@ button:hover {
     0% {
       opacity: 0;
     }
+
     100% {
       opacity: 1;
     }
@@ -794,10 +1043,12 @@ button:hover {
       opacity: 0;
       transform: scale(0.4) translateY(50%);
     }
+
     50% {
       opacity: 0.7;
       transform: scale(1) translateY(0);
     }
+
     100% {
       opacity: 1;
       transform: scale(1);
@@ -821,7 +1072,6 @@ button:hover {
     font-size: 4.5rem;
     margin-bottom: 30px;
   }
-
 
   input,
   textarea {
